@@ -1,6 +1,8 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
 using System.Drawing.Imaging;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Parallel_image_processing;
 
@@ -13,7 +15,7 @@ internal class Program
 
         // Create a new Bitmap with the same dimensions as the original image
         using var blackAndWhiteImage = new Bitmap(originalImage.Width, originalImage.Height);
-
+        
         Console.WriteLine("Processing Image:");
 
         // Loop through each pixel in the original image
@@ -56,6 +58,7 @@ internal class Program
         // Save the MemoryStream to disk asynchronously
 
         await SaveMemoryStreamToFileAsync(memoryStream, outputPath);
+       
     }
 
     static async Task SaveMemoryStreamToFileAsync(MemoryStream memoryStream, string outputPath)
@@ -72,41 +75,51 @@ internal class Program
     /// </summary>
     /// <param name="args"></param>
     /// <returns></returns>
-    static async Task Main(string[] args)
-    {
+    //static async Task Main(string[] args)
+    //{
+    //    var images = Directory.GetFiles(@"E:\Images");
+    //    var taskList = new List<Task>();
+    //    foreach (var image in images)
 
-        var images = Directory.GetFiles(@"E:\Images");
-        var taskList = new List<Task>();
-        foreach (var image in images)
+    //    {
+    //        var task = ConvertAsync(image);
+    //        taskList.Add(task);
+    //    }
 
-        {
-            var task = ConvertAsync(image);
-            taskList.Add(task);
-        }
+    //    Task.Run(async () =>
+    //    {
+    //        await Task.WhenAll(taskList);
+    //    });
 
-        Task.Run(async () =>
-        {
-            await Task.WhenAll(taskList);
-        });
-
-
-        Console.ReadKey();
-    }
+    //    Console.ReadKey();
+    //}
 
     /// <summary>
     /// Sync processing
     /// </summary>
-    /// <param name="args"></param>
-    /// <returns></returns>
+    /// <param name = "args" ></ param >
+    /// < returns ></ returns >
+    static async Task Main(string[] args)
+    {
+        var images = Directory.GetFiles(@"E:\Images");
+        foreach (var image in images)
+        {
+            await ConvertAsync(image);
+        }
+
+        Console.ReadKey();
+    }
+
+
     //static async Task Main(string[] args)
     //{
     //    var images = Directory.GetFiles(@"E:\Images");
-    //    foreach (var image in images)
+
+    //    Parallel.ForEach(images, (image) =>
     //    {
-    //        await ConvertAsync(image);
-
-    //    }
-
+    //        ConvertAsync(image);
+    //    });
     //    Console.ReadKey();
+
     //}
 }
